@@ -3,7 +3,35 @@ const path = require('path');
 
 // Read db.json
 const dbPath = path.join(__dirname, '..', 'db.json');
-let db = JSON.parse(fs.readFileSync(dbPath, 'utf8'));
+
+// Helper to get fresh data each request (to handle concurrent requests)
+const getDb = () => {
+  try {
+    return JSON.parse(fs.readFileSync(dbPath, 'utf8'));
+  } catch (error) {
+    console.error('Error reading db.json:', error);
+    return { users: [], doctors: [], appointments: [] };
+  }
+};
+
+// Helper to read request body
+const getBody = async (req) => {
+  if (req.body) return req.body;
+  
+  return new Promise((resolve) => {
+    let body = '';
+    req.on('data', chunk => {
+      body += chunk.toString();
+    });
+    req.on('end', () => {
+      try {
+        resolve(body ? JSON.parse(body) : {});
+      } catch {
+        resolve({});
+      }
+    });
+  });
+};
 
 module.exports = async (req, res) => {
   // Enable CORS
@@ -15,18 +43,18 @@ module.exports = async (req, res) => {
     return res.status(200).end();
   }
 
-  const url = new URL(req.url, `http://${req.headers.host}`);
-  const pathname = url.pathname.replace('/api', '');
-  const searchParams = url.searchParams;
-
-  // Parse the resource from the URL
-  const [, resource, id] = pathname.split('/').filter(Boolean);
-
-  if (!resource || !db[resource]) {
-    return res.status(404).json({ error: 'Resource not found' });
-  }
-
   try {
+    const db = getDb();
+    const url = new URL(req.url, `http://${req.headers.host}`);
+    const pathname = url.pathname.replace('/api', '');
+    const searchParams = url.searchParams;
+
+    // Parse the resource from the URL
+    const [, resource, id] = pathname.split('/').filter(Boolean);
+
+    if (!resource || !db[resource]) {
+      return res.status(404).json({ error: `Resource '${resource}' not found` });
+    }
     switch (req.method) {
       case 'GET':
         if (id) {
@@ -46,14 +74,14 @@ module.exports = async (req, res) => {
         }
 
       case 'POST':
-        const body = typeof req.body === 'string' ? JSON.parse(req.body) : req.body;
+        const body = await getBody(req);
         const newItem = {
           id: String(Date.now()),
           ...body
         };
         db[resource].push(newItem);
         
-        // Write to db.json (note: this won't persist in serverless)
+        // Write to db.json
         fs.writeFileSync(dbPath, JSON.stringify(db, null, 2));
         
         return res.status(201).json(newItem);
@@ -64,7 +92,7 @@ module.exports = async (req, res) => {
           return res.status(400).json({ error: 'ID required for update' });
         }
         
-        const updateBody = typeof req.body === 'string' ? JSON.parse(req.body) : req.body;
+        const updateBody = await getBody(req);
         const index = db[resource].findIndex(item => item.id === id);
         
         if (index === -1) {
