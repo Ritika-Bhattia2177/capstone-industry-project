@@ -1,6 +1,7 @@
-const { getDb } = require('./data');
+// Import data directly
+const data = require('./data');
 
-module.exports = async (req, res) => {
+module.exports = (req, res) => {
   // Enable CORS
   res.setHeader('Access-Control-Allow-Origin', '*');
   res.setHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, PATCH, OPTIONS');
@@ -11,7 +12,7 @@ module.exports = async (req, res) => {
   }
 
   try {
-    const db = getDb();
+    const db = data.getDb();
     const url = req.url || '';
     const pathname = url.split('?')[0].replace('/api', '');
     const parts = pathname.split('/').filter(Boolean);
@@ -21,6 +22,7 @@ module.exports = async (req, res) => {
     if (!resource || !db[resource]) {
       return res.status(404).json({ error: `Resource '${resource}' not found. Available: ${Object.keys(db).join(', ')}` });
     }
+    
     switch (req.method) {
       case 'GET':
         if (id) {
@@ -76,6 +78,6 @@ module.exports = async (req, res) => {
     }
   } catch (error) {
     console.error('API Error:', error);
-    return res.status(500).json({ error: error.message, stack: error.stack });
+    return res.status(500).json({ error: error.message, stack: process.env.NODE_ENV === 'development' ? error.stack : undefined });
   }
 };
