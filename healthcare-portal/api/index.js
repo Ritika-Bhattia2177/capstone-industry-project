@@ -1,15 +1,4 @@
-const fs = require('fs');
-const path = require('path');
-
-// Read db.json once at startup
-let db;
-try {
-  const dbPath = path.join(process.cwd(), 'db.json');
-  db = JSON.parse(fs.readFileSync(dbPath, 'utf8'));
-} catch (error) {
-  console.error('Error loading db.json:', error);
-  db = { users: [], doctors: [], appointments: [] };
-}
+const { getDb } = require('./data');
 
 module.exports = async (req, res) => {
   // Enable CORS
@@ -22,6 +11,7 @@ module.exports = async (req, res) => {
   }
 
   try {
+    const db = getDb();
     const url = req.url || '';
     const pathname = url.split('?')[0].replace('/api', '');
     const parts = pathname.split('/').filter(Boolean);
@@ -34,7 +24,7 @@ module.exports = async (req, res) => {
     switch (req.method) {
       case 'GET':
         if (id) {
-          const item = db[resource].find(item => item.id === id);
+          const item = db[resource].find(item => item.id === id || item.id === parseInt(id));
           return res.status(item ? 200 : 404).json(item || { error: 'Not found' });
         }
         return res.status(200).json(db[resource]);
@@ -42,7 +32,7 @@ module.exports = async (req, res) => {
       case 'POST': {
         const body = req.body || {};
         const newItem = {
-          id: String(Date.now()),
+          id: Date.now(),
           ...body
         };
         db[resource].push(newItem);
@@ -56,7 +46,7 @@ module.exports = async (req, res) => {
         }
         
         const updateBody = req.body || {};
-        const index = db[resource].findIndex(item => item.id === id);
+        const index = db[resource].findIndex(item => item.id === id || item.id === parseInt(id));
         
         if (index === -1) {
           return res.status(404).json({ error: 'Not found' });
@@ -71,7 +61,7 @@ module.exports = async (req, res) => {
           return res.status(400).json({ error: 'ID required for delete' });
         }
         
-        const deleteIndex = db[resource].findIndex(item => item.id === id);
+        const deleteIndex = db[resource].findIndex(item => item.id === id || item.id === parseInt(id));
         
         if (deleteIndex === -1) {
           return res.status(404).json({ error: 'Not found' });
