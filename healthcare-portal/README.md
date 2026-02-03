@@ -1,16 +1,92 @@
-# React + Vite
+# Healthcare Portal
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+A modern healthcare management application with appointment booking, doctor search, and patient dashboard.
 
-Currently, two official plugins are available:
+## Project Structure
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) (or [oxc](https://oxc.rs) when used in [rolldown-vite](https://vite.dev/guide/rolldown)) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+```
+healthcare-portal/
+├── frontend/          # React + Vite frontend application
+│   ├── src/          # Source code
+│   ├── public/       # Static assets
+│   └── package.json
+├── backend/          # API and database
+│   ├── api/         # Vercel serverless functions
+│   ├── db.json      # Mock database
+│   └── server.js    # Development server
+└── package.json     # Root package manager
+```
 
-## React Compiler
+## Getting Started
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+### Install Dependencies
 
-## Expanding the ESLint configuration
+```bash
+# Install all dependencies (frontend + backend)
+npm run install:all
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+# Or install individually
+npm run install:frontend
+npm run install:backend
+```
+
+### Development
+
+```bash
+# Run both frontend and backend
+npm run dev
+
+# Or run individually
+npm run dev:frontend  # Frontend on http://localhost:5173
+npm run dev:backend   # Backend on http://localhost:3001
+```
+
+### Build and Deploy
+
+```bash
+# Build frontend for production
+npm run build:frontend
+
+# Deploy to Vercel
+npm run deploy
+```
+
+## Features
+
+- **User Authentication**: Sign up and login functionality
+- **Doctor Search**: Find doctors by specialty and location
+- **Appointment Booking**: Book appointments with available doctors
+- **Dashboard**: View upcoming appointments and health metrics
+- **Profile Management**: Update personal and medical information
+- **Health Charts**: Visualize vitals and health trends
+
+## Tech Stack
+
+### Frontend
+- React 19
+- Vite
+- React Router
+- TanStack Query
+- Recharts
+
+### Backend
+- JSON Server (development)
+- Vercel Serverless Functions (production)
+- In-memory data storage
+
+## Deployment
+
+The application is configured for Vercel deployment:
+
+1. Push changes to GitHub
+2. Run `npm run deploy` or deploy through Vercel dashboard
+3. Frontend is deployed with Vite
+4. Backend API routes are handled by serverless functions
+
+## API Endpoints
+
+See [backend/API.md](backend/API.md) for complete API documentation.
+
+## License
+
+MIT

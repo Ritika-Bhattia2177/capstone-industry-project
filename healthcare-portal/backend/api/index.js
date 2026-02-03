@@ -1,7 +1,22 @@
 // Import data directly
 const data = require('./data');
 
-module.exports = (req, res) => {
+// Helper to parse body for Vercel
+async function parseBody(req) {
+  return new Promise((resolve) => {
+    let body = '';
+    req.on('data', chunk => body += chunk.toString());
+    req.on('end', () => {
+      try {
+        resolve(body ? JSON.parse(body) : {});
+      } catch (e) {
+        resolve({});
+      }
+    });
+  });
+}
+
+module.exports = async (req, res) => {
   // Enable CORS
   res.setHeader('Access-Control-Allow-Origin', '*');
   res.setHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, PATCH, OPTIONS');
@@ -14,7 +29,9 @@ module.exports = (req, res) => {
   try {
     const db = data.getDb();
     const url = req.url || '';
-    const pathname = url.split('?')[0].replace('/api', '');
+    const urlObj = new URL(url, `http://${req.headers.host}`);
+    const pathname = urlObj.pathname.replace('/api', '');
+    const searchParams = urlObj.searchParams;
     const parts = pathname.split('/').filter(Boolean);
     const resource = parts[0];
     const id = parts[1];
@@ -24,15 +41,25 @@ module.exports = (req, res) => {
     }
     
     switch (req.method) {
-      case 'GET':
+      case 'GET': {
         if (id) {
           const item = db[resource].find(item => item.id === id || item.id === parseInt(id));
           return res.status(item ? 200 : 404).json(item || { error: 'Not found' });
         }
-        return res.status(200).json(db[resource]);
+        
+        
+        let results = db[resource];
+        for (const [key, value] of searchParams.entries()) {
+          results = results.filter(item => 
+            item[key] && item[key].toString().toLowerCase() === value.toLowerCase()
+          );
+        }
+        
+        return res.status(200).json(results);
+      }
 
       case 'POST': {
-        const body = req.body || {};
+        const body = await parseBody(req);
         const newItem = {
           id: Date.now(),
           ...body
@@ -47,7 +74,7 @@ module.exports = (req, res) => {
           return res.status(400).json({ error: 'ID required for update' });
         }
         
-        const updateBody = req.body || {};
+        const updateBody = await parseBody(req);
         const index = db[resource].findIndex(item => item.id === id || item.id === parseInt(id));
         
         if (index === -1) {

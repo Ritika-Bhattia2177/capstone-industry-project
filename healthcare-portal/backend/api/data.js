@@ -144,7 +144,24 @@ const initialData = {
     }
   ],
   "appointments": [],
-  "users": [],
+  "users": [
+    {
+      "id": 1,
+      "name": "John Doe",
+      "email": "john.doe@email.com",
+      "password": "password123",
+      "phone": "(555) 123-4567",
+      "dateOfBirth": "1990-05-15",
+      "gender": "Male",
+      "bloodType": "O+",
+      "address": "123 Main Street, New York, NY 10001",
+      "emergencyContact": {
+        "name": "Jane Doe",
+        "relationship": "Spouse",
+        "phone": "(555) 987-6543"
+      }
+    }
+  ],
   "profile": {}
 };
 
