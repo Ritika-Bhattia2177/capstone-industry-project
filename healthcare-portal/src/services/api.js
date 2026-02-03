@@ -1,5 +1,8 @@
 // API Configuration
-const API_BASE_URL = import.meta.env.VITE_API_URL || 'http://localhost:3001';
+// In production (Vercel), use the same domain with /api prefix
+// In development, use localhost
+const API_BASE_URL = import.meta.env.VITE_API_URL || 
+  (import.meta.env.PROD ? '/api' : 'http://localhost:3001');
 
 // Helper function for API calls
 const fetchAPI = async (endpoint, options = {}) => {

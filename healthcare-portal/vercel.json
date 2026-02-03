@@ -19,7 +19,5 @@
       "dest": "/$1"
     }
   ],
-  "env": {
-    "VITE_API_URL": "https://healthcare-portal-tau.vercel.app/api"
-  }
+  "buildCommand": "npm run build"
 }
