@@ -298,7 +298,213 @@ const initialData = {
       }
     }
   ],
-  "profile": {}
+  "profile": {
+    "id": 1,
+    "userId": 1,
+    "personalInfo": {
+      "fullName": "John Doe",
+      "email": "john.doe@email.com",
+      "phone": "(555) 123-4567",
+      "dateOfBirth": "1990-05-15",
+      "gender": "Male",
+      "bloodType": "O+",
+      "address": "123 Main Street, New York, NY 10001",
+      "emergencyContact": {
+        "name": "Jane Doe",
+        "relationship": "Spouse",
+        "phone": "(555) 987-6543"
+      }
+    },
+    "medicalSummary": {
+      "conditions": [
+        {
+          "id": 1,
+          "name": "Hypertension",
+          "diagnosedDate": "2020-03-15",
+          "status": "Controlled"
+        },
+        {
+          "id": 2,
+          "name": "Type 2 Diabetes",
+          "diagnosedDate": "2019-08-22",
+          "status": "Managed"
+        }
+      ],
+      "allergies": [
+        {
+          "id": 1,
+          "name": "Penicillin",
+          "severity": "High",
+          "reaction": "Rash and difficulty breathing"
+        },
+        {
+          "id": 2,
+          "name": "Peanuts",
+          "severity": "Moderate",
+          "reaction": "Hives"
+        }
+      ],
+      "medications": [
+        {
+          "id": 1,
+          "name": "Metformin",
+          "dosage": "500mg",
+          "frequency": "Twice daily",
+          "prescribedDate": "2019-08-22"
+        },
+        {
+          "id": 2,
+          "name": "Lisinopril",
+          "dosage": "10mg",
+          "frequency": "Once daily",
+          "prescribedDate": "2020-03-15"
+        }
+      ],
+      "surgeries": [
+        {
+          "id": 1,
+          "name": "Appendectomy",
+          "date": "2015-06-10",
+          "hospital": "City General Hospital"
+        }
+      ]
+    },
+    "labResults": [
+      {
+        "id": 1,
+        "test": "HbA1c",
+        "value": "6.5",
+        "unit": "%",
+        "range": "4.0-5.6",
+        "status": "High",
+        "date": "2026-01-15"
+      },
+      {
+        "id": 2,
+        "test": "Fasting Glucose",
+        "value": "110",
+        "unit": "mg/dL",
+        "range": "70-100",
+        "status": "High",
+        "date": "2026-01-15"
+      },
+      {
+        "id": 3,
+        "test": "Total Cholesterol",
+        "value": "195",
+        "unit": "mg/dL",
+        "range": "<200",
+        "status": "Normal",
+        "date": "2026-01-15"
+      },
+      {
+        "id": 4,
+        "test": "LDL Cholesterol",
+        "value": "120",
+        "unit": "mg/dL",
+        "range": "<100",
+        "status": "High",
+        "date": "2026-01-15"
+      },
+      {
+        "id": 5,
+        "test": "HDL Cholesterol",
+        "value": "55",
+        "unit": "mg/dL",
+        "range": ">40",
+        "status": "Normal",
+        "date": "2026-01-15"
+      },
+      {
+        "id": 6,
+        "test": "Triglycerides",
+        "value": "140",
+        "unit": "mg/dL",
+        "range": "<150",
+        "status": "Normal",
+        "date": "2026-01-15"
+      },
+      {
+        "id": 7,
+        "test": "Blood Pressure",
+        "value": "128/82",
+        "unit": "mmHg",
+        "range": "<120/80",
+        "status": "Elevated",
+        "date": "2026-02-01"
+      }
+    ],
+    "vitals": {
+      "current": {
+        "bloodPressure": {
+          "systolic": 128,
+          "diastolic": 82,
+          "unit": "mmHg",
+          "date": "2026-02-01"
+        },
+        "heartRate": {
+          "value": 72,
+          "unit": "bpm",
+          "date": "2026-02-01"
+        },
+        "temperature": {
+          "value": 98.6,
+          "unit": "°F",
+          "date": "2026-02-01"
+        },
+        "weight": {
+          "value": 180,
+          "unit": "lbs",
+          "date": "2026-02-01"
+        },
+        "height": {
+          "value": 70,
+          "unit": "inches",
+          "date": "2026-02-01"
+        },
+        "bmi": {
+          "value": 25.8,
+          "status": "Overweight",
+          "date": "2026-02-01"
+        },
+        "oxygenSaturation": {
+          "value": 98,
+          "unit": "%",
+          "date": "2026-02-01"
+        }
+      },
+      "history": [
+        {
+          "date": "2025-11-01",
+          "bloodPressure": 132,
+          "heartRate": 75,
+          "weight": 182,
+          "bmi": 26.1
+        },
+        {
+          "date": "2025-12-01",
+          "bloodPressure": 130,
+          "heartRate": 74,
+          "weight": 181,
+          "bmi": 26
+        },
+        {
+          "date": "2026-01-01",
+          "bloodPressure": 129,
+          "heartRate": 73,
+          "weight": 180,
+          "bmi": 25.8
+        },
+        {
+          "date": "2026-02-01",
+          "bloodPressure": 128,
+          "heartRate": 72,
+          "weight": 180,
+          "bmi": 25.8
+        }
+      ]
+    }
+  }
 };
 
 // In-memory storage

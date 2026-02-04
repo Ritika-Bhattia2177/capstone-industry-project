@@ -39,6 +39,25 @@ module.exports = async (req, res) => {
     if (!resource || !db[resource]) {
       return res.status(404).json({ error: `Resource '${resource}' not found. Available: ${Object.keys(db).join(', ')}` });
     }
+
+    // Special handling for 'profile' - it's an object, not an array
+    if (resource === 'profile') {
+      switch (req.method) {
+        case 'GET':
+          return res.status(200).json(db.profile);
+        case 'PATCH':
+        case 'PUT': {
+          const updateBody = await parseBody(req);
+          db.profile = { ...db.profile, ...updateBody };
+          if (updateBody.personalInfo) {
+            db.profile.personalInfo = { ...db.profile.personalInfo, ...updateBody.personalInfo };
+          }
+          return res.status(200).json(db.profile);
+        }
+        default:
+          return res.status(405).json({ error: 'Method not allowed for profile' });
+      }
+    }
     
     switch (req.method) {
       case 'GET': {
