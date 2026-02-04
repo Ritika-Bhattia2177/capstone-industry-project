@@ -1,6 +1,25 @@
 import { fetchAPI } from './api';
 
-export const fetchAppointments = async (userId = 1) => {
+export const fetchAppointments = async (userId) => {
+  // If no userId provided, fetch from localStorage
+  if (!userId) {
+    try {
+      const storedUser = localStorage.getItem('user');
+      if (storedUser) {
+        const user = JSON.parse(storedUser);
+        userId = user?.id || 1;
+      } else {
+        userId = 1; // Default fallback
+      }
+    } catch (error) {
+      console.error('Error parsing user from localStorage:', error);
+      userId = 1; // Default fallback
+    }
+  }
+  
+  // Ensure userId is a number
+  userId = Number(userId) || 1;
+  
   const appointments = await fetchAPI(`/appointments?userId=${userId}`);
   
   // Sort by date (newest first)

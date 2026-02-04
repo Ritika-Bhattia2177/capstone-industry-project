@@ -35,7 +35,10 @@ const AppointmentCard = ({ appointment, onCancel, onReschedule, isPast = false }
       backgroundColor: 'white',
       boxShadow: '0 2px 4px rgba(0,0,0,0.08)',
       transition: 'transform 0.2s, box-shadow 0.2s',
-      opacity: appointment.status === 'cancelled' ? 0.7 : 1
+      opacity: appointment.status === 'cancelled' ? 0.7 : 1,
+      maxWidth: '100%',
+      boxSizing: 'border-box',
+      overflow: 'hidden'
     }}
     onMouseEnter={(e) => {
       e.currentTarget.style.transform = 'translateY(-2px)';

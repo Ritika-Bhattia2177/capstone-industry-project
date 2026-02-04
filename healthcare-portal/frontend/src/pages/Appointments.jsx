@@ -67,7 +67,7 @@ const Appointments = () => {
   const { upcoming, past } = categorizeAppointments(appointments || []);
 
   return (
-    <div style={{ padding: '30px 50px', width: '100%' }}>
+    <div style={{ padding: '20px', maxWidth: '100%', width: '100%', boxSizing: 'border-box', overflowX: 'hidden' }}>
       <div style={{ marginBottom: '30px' }}>
         <h1 style={{ marginBottom: '10px', color: '#2c3e50' }}>My Appointments</h1>
         <p style={{ color: '#7f8c8d', fontSize: '16px' }}>
@@ -78,9 +78,10 @@ const Appointments = () => {
       {/* Statistics Cards */}
       <div style={{
         display: 'grid',
-        gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))',
-        gap: '20px',
-        marginBottom: '30px'
+        gridTemplateColumns: 'repeat(auto-fit, minmax(180px, 1fr))',
+        gap: '15px',
+        marginBottom: '30px',
+        maxWidth: '100%'
       }}>
         <div style={{
           padding: '20px',
@@ -202,8 +203,9 @@ const Appointments = () => {
           ) : (
             <div style={{
               display: 'grid',
-              gridTemplateColumns: 'repeat(auto-fill, minmax(400px, 1fr))',
-              gap: '20px'
+              gridTemplateColumns: 'repeat(auto-fill, minmax(min(100%, 350px), 1fr))',
+              gap: '20px',
+              maxWidth: '100%'
             }}>
               {upcoming.map((appointment) => (
                 <AppointmentCard
@@ -239,8 +241,9 @@ const Appointments = () => {
           ) : (
             <div style={{
               display: 'grid',
-              gridTemplateColumns: 'repeat(auto-fill, minmax(400px, 1fr))',
-              gap: '20px'
+              gridTemplateColumns: 'repeat(auto-fill, minmax(min(100%, 350px), 1fr))',
+              gap: '20px',
+              maxWidth: '100%'
             }}>
               {past.map((appointment) => (
                 <AppointmentCard

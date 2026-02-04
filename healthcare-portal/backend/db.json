@@ -297,6 +297,94 @@
       },
       "createdAt": "2026-02-03T03:55:05.086Z",
       "id": 10
+    },
+    {
+      "userId": 4,
+      "doctorId": 7,
+      "doctorName": "Dr. Jennifer Davis",
+      "doctorSpecialty": "Pediatrics",
+      "doctorImage": "https://ui-avatars.com/api/?name=Jennifer+Davis&background=E67E22&color=fff&size=200",
+      "date": "2026-02-08",
+      "time": "11:30 AM",
+      "status": "scheduled",
+      "patientInfo": {
+        "fullName": "preeti",
+        "email": "preeti12@gmail.com",
+        "phone": "80914-51830",
+        "dateOfBirth": "2026-02-05",
+        "gender": "female",
+        "address": "wrtyuuuuyt",
+        "reason": "dfghjk",
+        "notes": "wertyui"
+      },
+      "createdAt": "2026-02-04T03:39:10.428Z",
+      "id": 11
+    },
+    {
+      "userId": 4,
+      "doctorId": 6,
+      "doctorName": "Dr. Robert Taylor",
+      "doctorSpecialty": "Cardiology",
+      "doctorImage": "https://ui-avatars.com/api/?name=Robert+Taylor&background=16A085&color=fff&size=200",
+      "date": "2026-02-09",
+      "time": "12:30 PM",
+      "status": "scheduled",
+      "patientInfo": {
+        "fullName": "preeti",
+        "email": "preeti12@gmail.com",
+        "phone": "80914-51830",
+        "dateOfBirth": "2026-02-05",
+        "gender": "male",
+        "address": "fghj",
+        "reason": "vbn",
+        "notes": "wertyuisdfghjkl"
+      },
+      "createdAt": "2026-02-04T03:45:48.001Z",
+      "id": 12
+    },
+    {
+      "userId": 5,
+      "doctorId": 2,
+      "doctorName": "Dr. Michael Jones",
+      "doctorSpecialty": "Pediatrics",
+      "doctorImage": "https://ui-avatars.com/api/?name=Michael+Jones&background=27AE60&color=fff&size=200",
+      "date": "2026-02-08",
+      "time": "11:30 AM",
+      "status": "scheduled",
+      "patientInfo": {
+        "fullName": "preeti",
+        "email": "preeti112@gmail.com",
+        "phone": "80914-51830",
+        "dateOfBirth": "2026-02-06",
+        "gender": "male",
+        "address": "asdfghjk",
+        "reason": "sdfghj",
+        "notes": "sdfghj"
+      },
+      "createdAt": "2026-02-04T08:51:25.278Z",
+      "id": 13
+    },
+    {
+      "userId": 5,
+      "doctorId": 5,
+      "doctorName": "Dr. Lisa Martinez",
+      "doctorSpecialty": "Orthopedics",
+      "doctorImage": "https://ui-avatars.com/api/?name=Lisa+Martinez&background=F39C12&color=fff&size=200",
+      "date": "2026-02-08",
+      "time": "11:30 AM",
+      "status": "scheduled",
+      "patientInfo": {
+        "fullName": "preeti",
+        "email": "preeti112@gmail.com",
+        "phone": "80914-51830",
+        "dateOfBirth": "2026-02-06",
+        "gender": "male",
+        "address": "asdfghjk",
+        "reason": "vbnm",
+        "notes": "qwertyuio"
+      },
+      "createdAt": "2026-02-04T08:55:45.607Z",
+      "id": 14
     }
   ],
   "users": [
@@ -346,6 +434,38 @@
         "phone": ""
       },
       "id": 3
+    },
+    {
+      "name": "preeti",
+      "email": "preeti12@gmail.com",
+      "password": "1234567",
+      "phone": "",
+      "dateOfBirth": "",
+      "gender": "",
+      "bloodType": "",
+      "address": "",
+      "emergencyContact": {
+        "name": "",
+        "relationship": "",
+        "phone": ""
+      },
+      "id": 4
+    },
+    {
+      "name": "preeti",
+      "email": "preeti112@gmail.com",
+      "password": "123456",
+      "phone": "",
+      "dateOfBirth": "",
+      "gender": "",
+      "bloodType": "",
+      "address": "",
+      "emergencyContact": {
+        "name": "",
+        "relationship": "",
+        "phone": ""
+      },
+      "id": 5
     }
   ],
   "profile": {

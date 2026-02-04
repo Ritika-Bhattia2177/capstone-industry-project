@@ -19,8 +19,13 @@ server.use((req, res, next) => {
 });
 
 server.use(middlewares);
-server.use(router);
+
+// Mount router at /api
+server.use('/api', router);
 
 server.listen(port, () => {
   console.log(`JSON Server is running on port ${port}`);
 });
+
+// Export for Vercel
+module.exports = server;
