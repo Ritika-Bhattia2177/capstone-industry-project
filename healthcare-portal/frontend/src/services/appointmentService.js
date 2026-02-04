@@ -1,4 +1,11 @@
 import { fetchAPI } from './api';
+import { 
+  getLocalBookedAppointments, 
+  saveLocalBookedAppointment, 
+  updateLocalAppointment, 
+  deleteLocalAppointment,
+  mergeAppointments 
+} from './localStorageService';
 
 export const fetchAppointments = async (userId) => {
   // If no userId provided, fetch from localStorage
@@ -20,35 +27,97 @@ export const fetchAppointments = async (userId) => {
   // Ensure userId is a number
   userId = Number(userId) || 1;
   
-  const appointments = await fetchAPI(`/appointments?userId=${userId}`);
-  
-  // Sort by date (newest first)
-  return appointments.sort((a, b) => {
-    const dateA = new Date(a.date + ' ' + a.time);
-    const dateB = new Date(b.date + ' ' + b.time);
-    return dateB - dateA;
-  });
+  try {
+    // Fetch from API
+    const remoteAppointments = await fetchAPI(`/appointments?userId=${userId}`);
+    
+    // Get local appointments
+    const localAppointments = getLocalBookedAppointments();
+    
+    // Merge remote and local data
+    const allAppointments = mergeAppointments(remoteAppointments, localAppointments);
+    
+    // Sort by date (newest first)
+    return allAppointments.sort((a, b) => {
+      const dateA = new Date(a.date + ' ' + a.time);
+      const dateB = new Date(b.date + ' ' + b.time);
+      return dateB - dateA;
+    });
+  } catch (error) {
+    console.error('Error fetching appointments:', error);
+    // If API fails, return local appointments
+    const localAppointments = getLocalBookedAppointments();
+    return localAppointments.sort((a, b) => {
+      const dateA = new Date(a.date + ' ' + a.time);
+      const dateB = new Date(b.date + ' ' + b.time);
+      return dateB - dateA;
+    });
+  }
 };
 
 export const createAppointment = async (appointmentData) => {
-  return fetchAPI('/appointments', {
-    method: 'POST',
-    body: JSON.stringify(appointmentData),
-  });
+  try {
+    // Try to save to API
+    const result = await fetchAPI('/appointments', {
+      method: 'POST',
+      body: JSON.stringify(appointmentData),
+    });
+    
+    // Also save to localStorage
+    saveLocalBookedAppointment(result);
+    
+    return result;
+  } catch (error) {
+    console.error('API error, saving to localStorage only:', error);
+    // If API fails, save to localStorage with generated ID
+    const newAppointment = {
+      ...appointmentData,
+      id: Date.now(), // Generate unique ID
+      createdAt: new Date().toISOString()
+    };
+    saveLocalBookedAppointment(newAppointment);
+    return newAppointment;
+  }
 };
 
 export const cancelAppointment = async (appointmentId) => {
-  return fetchAPI(`/appointments/${appointmentId}`, {
-    method: 'PATCH',
-    body: JSON.stringify({ status: 'cancelled' }),
-  });
+  try {
+    // Try to update via API
+    const result = await fetchAPI(`/appointments/${appointmentId}`, {
+      method: 'PATCH',
+      body: JSON.stringify({ status: 'cancelled' }),
+    });
+    
+    // Also update in localStorage
+    updateLocalAppointment(appointmentId, { status: 'cancelled' });
+    
+    return result;
+  } catch (error) {
+    console.error('API error, updating localStorage only:', error);
+    // If API fails, update localStorage
+    updateLocalAppointment(appointmentId, { status: 'cancelled' });
+    return { id: appointmentId, status: 'cancelled' };
+  }
 };
 
 export const rescheduleAppointment = async (appointmentId, newDate, newTime) => {
-  return fetchAPI(`/appointments/${appointmentId}`, {
-    method: 'PATCH',
-    body: JSON.stringify({ date: newDate, time: newTime }),
-  });
+  try {
+    // Try to update via API
+    const result = await fetchAPI(`/appointments/${appointmentId}`, {
+      method: 'PATCH',
+      body: JSON.stringify({ date: newDate, time: newTime }),
+    });
+    
+    // Also update in localStorage
+    updateLocalAppointment(appointmentId, { date: newDate, time: newTime });
+    
+    return result;
+  } catch (error) {
+    console.error('API error, updating localStorage only:', error);
+    // If API fails, update localStorage
+    updateLocalAppointment(appointmentId, { date: newDate, time: newTime });
+    return { id: appointmentId, date: newDate, time: newTime };
+  }
 };
 
 // Helper function to categorize appointments

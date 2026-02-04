@@ -3,6 +3,7 @@ import { useAuth } from '../context/AuthContext';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { fetchProfileData, updateProfileInfo } from '../services/profileService';
 import { fetchAppointments, categorizeAppointments } from '../services/appointmentService';
+import { showNotification } from '../components/NotificationContainer';
 import VitalsChart from '../components/VitalsChart';
 
 const Profile = () => {
@@ -31,10 +32,10 @@ const Profile = () => {
     onSuccess: () => {
       queryClient.invalidateQueries(['profile']);
       setIsEditMode(false);
-      alert('Profile updated successfully!');
+      showNotification('✓ Profile updated successfully!', 'success');
     },
     onError: (error) => {
-      alert('Failed to update profile: ' + error.message);
+      showNotification('Failed to update profile: ' + error.message, 'error');
     }
   });
 

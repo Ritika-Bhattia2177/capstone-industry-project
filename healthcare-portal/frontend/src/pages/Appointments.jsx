@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { fetchAppointments, cancelAppointment, categorizeAppointments } from '../services/appointmentService';
 import AppointmentCard from '../components/AppointmentCard';
+import { showNotification } from '../components/NotificationContainer';
 
 const Appointments = () => {
   const [activeTab, setActiveTab] = useState('upcoming');
@@ -19,10 +20,10 @@ const Appointments = () => {
     mutationFn: cancelAppointment,
     onSuccess: () => {
       queryClient.invalidateQueries(['appointments']);
-      alert('Appointment cancelled successfully!');
+      showNotification('✓ Appointment cancelled successfully!', 'success');
     },
     onError: (error) => {
-      alert('Failed to cancel appointment: ' + error.message);
+      showNotification('Failed to cancel appointment: ' + error.message, 'error');
     }
   });
 
@@ -34,7 +35,7 @@ const Appointments = () => {
 
   const handleReschedule = (appointment) => {
     // Navigate to booking page with appointment data
-    alert(`Reschedule functionality - would redirect to booking page for ${appointment.doctorName}`);
+    showNotification('ℹ️ Redirecting to booking page...', 'info');
   };
 
   if (isLoading) {

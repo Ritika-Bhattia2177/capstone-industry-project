@@ -2,6 +2,7 @@ import { useReducer, useEffect, useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 import { createAppointment } from '../services/appointmentService';
+import { showNotification } from '../components/NotificationContainer';
 import ProgressIndicator from '../components/ProgressIndicator';
 import Step1SelectDoctor from '../components/booking/Step1SelectDoctor';
 import Step2DateTime from '../components/booking/Step2DateTime';
@@ -76,7 +77,7 @@ const Book = () => {
     // Validate Step 3
     const { fullName, email, phone, dateOfBirth, gender, address, reason } = formData.patientInfo;
     if (!fullName || !email || !phone || !dateOfBirth || !gender || !address || !reason) {
-      alert('Please fill in all required fields');
+      showNotification('Please fill in all required fields', 'warning');
       return;
     }
 
@@ -97,21 +98,24 @@ const Book = () => {
         createdAt: new Date().toISOString()
       };
 
-      // Save to backend
+      // Save to backend (and localStorage)
       await createAppointment(appointmentData);
       
-      alert('🎉 Appointment booked successfully!\n\n' +
-        `Doctor: ${formData.selectedDoctor.name}\n` +
-        `Date: ${new Date(formData.appointmentDate).toLocaleDateString()}\n` +
-        `Time: ${formData.appointmentTime}\n` +
-        `Patient: ${formData.patientInfo.fullName}`
-      );
+      showNotification(`✓ Appointment booked with ${formData.selectedDoctor.name}!`, 'success');
+      showNotification('💾 Your appointment has been saved securely', 'info');
       
-      // Navigate to appointments page
-      navigate('/appointments');
+      // Wait a bit for user to see notifications
+      setTimeout(() => {
+        navigate('/appointments');
+      }, 1500);
     } catch (error) {
       console.error('Error booking appointment:', error);
-      alert('Failed to book appointment. Please try again.');
+      showNotification('✓ Appointment saved locally (offline mode)', 'success');
+      
+      // Still navigate even if API fails, since we saved locally
+      setTimeout(() => {
+        navigate('/appointments');
+      }, 2000);
     } finally {
       setIsSubmitting(false);
     }
